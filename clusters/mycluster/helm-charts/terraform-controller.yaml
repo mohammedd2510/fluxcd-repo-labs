@@ -24,9 +24,3 @@ spec:
         kind: HelmRepository
         name: terraform-controller
         namespace: flux-system
-  values:
-    runner:
-      image:
-        repository: ghcr.io/flux-iac/tf-runner
-      serviceAccount:
-        create: true
