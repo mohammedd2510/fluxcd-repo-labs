@@ -1,0 +1,37 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: nginx-ec2
+  namespace: flux-system
+spec:
+  storeReadablePlan: human
+  interval: 5m
+  retryInterval: 1m
+  approvePlan: auto
+  destroy: false
+  path: ./infrastructure/nginx-ec2
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  backendConfig:
+    customConfiguration: |
+      backend "s3" {
+        bucket         = "fluxcd-tf-state-lab"
+        key            = "nginx-ec2/terraform.tfstate"
+        region         = "us-east-1"
+        dynamodb_table = "fluxcd-tf-lock"
+        encrypt        = true
+      }
+  vars:
+    - name: ami_id
+      value: ami-02dfbd4ff395f2a1b
+    - name: instance_type
+      value: t3.micro
+  runnerPodTemplate:
+    spec:
+      envFrom:
+        - secretRef:
+            name: aws-credentials
+  writeOutputsToSecret:
+    name: nginx-ec2-outputs
