@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: route-demo
-          image: ghcr.io/mohammedd2510/react-app-cicd:latest # {"$imagepolicy": "flux-system:react-app-cicd"}
+          image: ghcr.io/mohammedd2510/react-app-cicd:0.0.2 # {"$imagepolicy": "flux-system:react-app-cicd"}
           imagePullPolicy: Always
           ports:
             - containerPort: 80
